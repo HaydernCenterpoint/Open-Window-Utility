@@ -1,0 +1,241 @@
+{
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "feature.dotnet",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "NetFx3", "enable": true },
+        { "type": "dismFeature", "featureName": "NetFx4-AdvSrvs", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "NetFx3", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.hyperv",
+      "kind": "feature",
+      "editions": ["Professional", "ProfessionalWorkstation", "Enterprise", "Education"],
+      "apply": [
+        { "type": "dismFeature", "featureName": "Microsoft-Hyper-V-All", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "Microsoft-Hyper-V-All", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.wsl",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "VirtualMachinePlatform", "enable": true },
+        { "type": "dismFeature", "featureName": "Microsoft-Windows-Subsystem-Linux", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "Microsoft-Windows-Subsystem-Linux", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.sandbox",
+      "kind": "feature",
+      "editions": ["Professional", "ProfessionalWorkstation", "Enterprise", "Education"],
+      "apply": [
+        { "type": "dismFeature", "featureName": "Containers-DisposableClientVM", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "Containers-DisposableClientVM", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.nfs",
+      "kind": "feature",
+      "editions": ["Professional", "ProfessionalWorkstation", "Enterprise", "Education"],
+      "apply": [
+        { "type": "dismFeature", "featureName": "ServicesForNFS-ClientOnly", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "ServicesForNFS-ClientOnly", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.legacy-media",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "WindowsMediaPlayer", "enable": true },
+        { "type": "dismFeature", "featureName": "DirectPlay", "enable": true },
+        { "type": "dismFeature", "featureName": "LegacyComponents", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "DirectPlay", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.f8-enable",
+      "kind": "feature",
+      "apply": [
+        { "type": "process", "fileName": "bcdedit.exe", "arguments": "/set bootmenupolicy legacy" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "bcdedit.exe", "arguments": "/set bootmenupolicy standard" }
+      ]
+    },
+    {
+      "id": "feature.f8-disable",
+      "kind": "feature",
+      "apply": [
+        { "type": "process", "fileName": "bcdedit.exe", "arguments": "/set bootmenupolicy standard" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "bcdedit.exe", "arguments": "/set bootmenupolicy legacy" }
+      ]
+    },
+    {
+      "id": "feature.registry-backup",
+      "kind": "feature",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager", "name": "EnablePeriodicBackup", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager", "name": "EnablePeriodicBackup" }
+      ]
+    },
+    {
+      "id": "fix.reset-windows-update",
+      "kind": "fix",
+      "apply": [
+        { "type": "serviceStartup", "serviceName": "wuauserv", "startupType": "manual", "stop": true },
+        { "type": "serviceStartup", "serviceName": "wuauserv", "startupType": "manual", "start": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.reset-network",
+      "kind": "fix",
+      "apply": [
+        { "type": "process", "fileName": "netsh.exe", "arguments": "int ip reset" },
+        { "type": "process", "fileName": "netsh.exe", "arguments": "winsock reset" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.system-scan",
+      "kind": "fix",
+      "apply": [
+        { "type": "process", "fileName": "sfc.exe", "arguments": "/scannow" },
+        { "type": "process", "fileName": "dism.exe", "arguments": "/Online /Cleanup-Image /RestoreHealth" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.reinstall-winget",
+      "kind": "fix",
+      "apply": [
+        { "type": "process", "fileName": "winget.exe", "arguments": "install --id Microsoft.AppInstaller --exact --force --accept-package-agreements --accept-source-agreements --disable-interactivity" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.computer-management",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "compmgmt.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.control-panel",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "control.exe", "waitForExit": false }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.mouse",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "main.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.network",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "ncpa.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.power",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "powercfg.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.programs",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "appwiz.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.region",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "intl.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.security",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "wscui.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.sound",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "mmsys.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.system",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "sysdm.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.timedate",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "timedate.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.firewall",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "firewall.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.restore",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "rstrui.exe", "waitForExit": false }
+      ],
+      "undo": []
+    }
+  ]
+}

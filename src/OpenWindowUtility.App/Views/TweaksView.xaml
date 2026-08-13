@@ -1,0 +1,60 @@
+<UserControl x:Class="OpenWindowUtility.App.Views.TweaksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:loc="clr-namespace:OpenWindowUtility.App.Markup">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <ui:Button Appearance="Primary" Content="{loc:Loc tweaks.apply}" Command="{Binding ApplyCommand}" Margin="0,0,6,0" />
+                <ui:Button Content="{loc:Loc tweaks.essential}" Command="{Binding SelectEssentialCommand}" Margin="0,0,6,0" />
+                <ui:Button Content="{loc:Loc tweaks.undo}" Command="{Binding UndoCommand}" Margin="0,0,6,0" />
+                <ui:Button Content="{loc:Loc tweaks.deselect}" Command="{Binding DeselectAllCommand}" />
+            </StackPanel>
+            <TextBlock Text="{Binding LoadedText}" Style="{StaticResource PageTitle}" VerticalAlignment="Center" />
+        </DockPanel>
+        <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource FooterText}" Text="{Binding FooterText}" />
+        <ScrollViewer>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Style="{StaticResource Card}" Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="{loc:Loc tweaks.essentialHeading}" Style="{StaticResource SectionLabel}" Margin="0,0,0,10" />
+                        <ItemsControl ItemsSource="{Binding Essential}" ItemTemplate="{StaticResource TweakCheckTemplate}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}" Margin="4,0,4,0">
+                    <StackPanel>
+                        <TextBlock Text="{loc:Loc tweaks.advancedHeading}" Style="{StaticResource SectionLabel}"
+                                   Foreground="#C4A574" Margin="0,0,0,10" />
+                        <ItemsControl ItemsSource="{Binding Advanced}" ItemTemplate="{StaticResource TweakCheckTemplate}" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Card}" Margin="8,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="{loc:Loc tweaks.togglesHeading}" Style="{StaticResource SectionLabel}" Margin="0,0,0,10" />
+                        <ItemsControl ItemsSource="{Binding Toggles}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,0,0,10" LastChildFill="True">
+                                        <ui:ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsSelected}"
+                                                         Command="{Binding DataContext.TogglePreferenceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                         CommandParameter="{Binding}" />
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding Description}" Style="{StaticResource MetaLabel}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

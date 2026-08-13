@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OpenWindowUtility.App/OpenWindowUtility.App.csproj" />
+    <Project Path="src/OpenWindowUtility.Core/OpenWindowUtility.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OpenWindowUtility.Core.Tests/OpenWindowUtility.Core.Tests.csproj" />
+  </Folder>
+</Solution>

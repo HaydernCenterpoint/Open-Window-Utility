@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: Test
+        run: dotnet test OpenWindowUtility.slnx -c Release
+      - name: Publish portable EXE
+        run: >
+          dotnet publish src/OpenWindowUtility.App/OpenWindowUtility.App.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -o artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OpenWindowUtility-win-x64
+          path: artifacts/OpenWindowUtility.exe

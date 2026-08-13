@@ -1,0 +1,451 @@
+{
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": "privacy.activity-history",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "EnableActivityFeed", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "PublishUserActivities", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "UploadUserActivities", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "EnableActivityFeed" },
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "PublishUserActivities" },
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "UploadUserActivities" }
+      ]
+    },
+    {
+      "id": "privacy.location",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "serviceStartup", "serviceName": "lfsvc", "startupType": "disabled", "stop": true }
+      ],
+      "undo": [
+        { "type": "serviceStartup", "serviceName": "lfsvc", "startupType": "manual" }
+      ]
+    },
+    {
+      "id": "privacy.consumer-features",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent", "name": "DisableWindowsConsumerFeatures", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent", "name": "DisableWindowsConsumerFeatures" }
+      ]
+    },
+    {
+      "id": "privacy.telemetry",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", "name": "AllowTelemetry", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection", "name": "AllowTelemetry", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", "name": "AllowTelemetry" },
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection", "name": "AllowTelemetry" }
+      ]
+    },
+    {
+      "id": "privacy.store-search",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer", "name": "DisableSearchBoxSuggestions", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer", "name": "DisableSearchBoxSuggestions" }
+      ]
+    },
+    {
+      "id": "network.delivery-optimization",
+      "risk": "essential",
+      "category": "network",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config", "name": "DODownloadMode", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config", "name": "DODownloadMode" }
+      ]
+    },
+    {
+      "id": "explorer.end-task",
+      "risk": "essential",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings", "name": "TaskbarEndTask", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings", "name": "TaskbarEndTask" }
+      ]
+    },
+    {
+      "id": "explorer.auto-discovery",
+      "risk": "essential",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\\AllFolders\\Shell", "name": "FolderType", "valueKind": "string", "value": "NotSpecified" }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\\AllFolders\\Shell", "name": "FolderType" }
+      ]
+    },
+    {
+      "id": "apps.companion-prevent",
+      "risk": "essential",
+      "category": "apps",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Device Metadata", "name": "PreventDeviceMetadataFromNetwork", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Device Metadata", "name": "PreventDeviceMetadataFromNetwork" }
+      ]
+    },
+    {
+      "id": "power.hibernation-disable",
+      "risk": "essential",
+      "category": "power",
+      "apply": [
+        { "type": "process", "fileName": "powercfg.exe", "arguments": "/hibernate off" },
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power", "name": "HibernateEnabled", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "powercfg.exe", "arguments": "/hibernate on" },
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power", "name": "HibernateEnabled", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "maintenance.disk-cleanup",
+      "risk": "essential",
+      "category": "maintenance",
+      "apply": [
+        { "type": "process", "fileName": "cleanmgr.exe", "arguments": "/verylowdisk", "waitForExit": false }
+      ],
+      "undo": []
+    },
+    {
+      "id": "maintenance.restore-point",
+      "risk": "essential",
+      "category": "maintenance",
+      "apply": [
+        { "type": "createRestorePoint", "description": "Open Window Utility" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "security.bitlocker-disable",
+      "risk": "advanced",
+      "category": "security",
+      "requiresConfirm": true,
+      "apply": [
+        { "type": "process", "fileName": "manage-bde.exe", "arguments": "-off C:" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "apps.remove-onedrive",
+      "risk": "advanced",
+      "category": "apps",
+      "requiresConfirm": true,
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\OneDrive", "name": "DisableFileSyncNGSC", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\OneDrive", "name": "DisableFileSyncNGSC" }
+      ]
+    },
+    {
+      "id": "network.disable-ipv6",
+      "risk": "advanced",
+      "category": "network",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters", "name": "DisabledComponents", "valueKind": "dword", "value": 255 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters", "name": "DisabledComponents" }
+      ]
+    },
+    {
+      "id": "network.ipv4-preferred",
+      "risk": "advanced",
+      "category": "network",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters", "name": "DisabledComponents", "valueKind": "dword", "value": 32 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters", "name": "DisabledComponents" }
+      ]
+    },
+    {
+      "id": "storage.disable-reserved",
+      "risk": "advanced",
+      "category": "storage",
+      "apply": [
+        { "type": "process", "fileName": "dism.exe", "arguments": "/Online /Set-ReservedStorageState /State:Disabled" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "dism.exe", "arguments": "/Online /Set-ReservedStorageState /State:Enabled" }
+      ]
+    },
+    {
+      "id": "time.utc",
+      "risk": "advanced",
+      "category": "time",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation", "name": "RealTimeIsUniversal", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation", "name": "RealTimeIsUniversal" }
+      ]
+    },
+    {
+      "id": "apps.disable-background",
+      "risk": "advanced",
+      "category": "apps",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications", "name": "GlobalUserDisabled", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications", "name": "GlobalUserDisabled" }
+      ]
+    },
+    {
+      "id": "gaming.disable-fullscreen-optimizations",
+      "risk": "advanced",
+      "category": "gaming",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SYSTEM\\GameConfigStore", "name": "GameDVR_DXGIHonorFSEWindowsCompatible", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SYSTEM\\GameConfigStore", "name": "GameDVR_DXGIHonorFSEWindowsCompatible" }
+      ]
+    },
+    {
+      "id": "explorer.disable-home",
+      "risk": "advanced",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer", "name": "HubMode", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer", "name": "HubMode" }
+      ]
+    },
+    {
+      "id": "ai.disable-copilot",
+      "risk": "advanced",
+      "category": "ai",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot", "name": "TurnOffWindowsCopilot", "valueKind": "dword", "value": 1 },
+        { "type": "appxRemove", "packageName": "Microsoft.Copilot" }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot", "name": "TurnOffWindowsCopilot" }
+      ]
+    },
+    {
+      "id": "explorer.classic-context-menu",
+      "risk": "advanced",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32", "name": "", "valueKind": "string", "value": "" }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32", "name": "" }
+      ]
+    },
+    {
+      "id": "ui.dark-theme",
+      "risk": "preference",
+      "category": "ui",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "name": "AppsUseLightTheme", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "name": "SystemUsesLightTheme", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "name": "AppsUseLightTheme", "valueKind": "dword", "value": 1 },
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "name": "SystemUsesLightTheme", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "files.long-paths",
+      "risk": "preference",
+      "category": "files",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\FileSystem", "name": "LongPathsEnabled", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\FileSystem", "name": "LongPathsEnabled", "valueKind": "dword", "value": 0 }
+      ]
+    },
+    {
+      "id": "explorer.file-extensions",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "HideFileExt", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "HideFileExt", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "gaming.game-mode",
+      "risk": "preference",
+      "category": "gaming",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\GameBar", "name": "AutoGameModeEnabled", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\GameBar", "name": "AutoGameModeEnabled", "valueKind": "dword", "value": 0 }
+      ]
+    },
+    {
+      "id": "ui.logon-acrylic",
+      "risk": "preference",
+      "category": "ui",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "DisableAcrylicBackgroundOnLogon", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "DisableAcrylicBackgroundOnLogon", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "explorer.hidden-files",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "Hidden", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "Hidden", "valueKind": "dword", "value": 2 }
+      ]
+    },
+    {
+      "id": "ui.bsod-verbose",
+      "risk": "preference",
+      "category": "ui",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\CrashControl", "name": "DisplayParameters", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\CrashControl", "name": "DisplayParameters", "valueKind": "dword", "value": 0 }
+      ]
+    },
+    {
+      "id": "ui.lock-screen-disable",
+      "risk": "preference",
+      "category": "ui",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization", "name": "NoLockScreen", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization", "name": "NoLockScreen" }
+      ]
+    },
+    {
+      "id": "ui.logon-verbose",
+      "risk": "preference",
+      "category": "ui",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "name": "VerboseStatus", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "name": "VerboseStatus" }
+      ]
+    },
+    {
+      "id": "office.block-new-outlook",
+      "risk": "preference",
+      "category": "office",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Office\\16.0\\Outlook\\Options\\General", "name": "HideNewOutlookToggle", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Office\\16.0\\Outlook\\Options\\General", "name": "HideNewOutlookToggle" }
+      ]
+    },
+    {
+      "id": "power.ultimate-performance",
+      "risk": "preference",
+      "category": "power",
+      "apply": [
+        { "type": "process", "fileName": "powercfg.exe", "arguments": "-duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb46" },
+        { "type": "process", "fileName": "powercfg.exe", "arguments": "/setactive e9a42b02-d5df-448d-aa00-03f14749eb46" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "powercfg.exe", "arguments": "/setactive 381b4222-f694-41f0-9685-ff5bb260df2e" }
+      ]
+    },
+    {
+      "id": "dns.dhcp",
+      "risk": "advanced",
+      "category": "dns",
+      "apply": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses }\"" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "dns.cloudflare",
+      "risk": "advanced",
+      "category": "dns",
+      "apply": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses 1.1.1.1,1.0.0.1 }\"" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses }\"" }
+      ]
+    },
+    {
+      "id": "dns.cloudflare-malware",
+      "risk": "advanced",
+      "category": "dns",
+      "apply": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses 1.1.1.2,1.0.0.2 }\"" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses }\"" }
+      ]
+    },
+    {
+      "id": "dns.google",
+      "risk": "advanced",
+      "category": "dns",
+      "apply": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses 8.8.8.8,8.8.4.4 }\"" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses }\"" }
+      ]
+    },
+    {
+      "id": "dns.quad9",
+      "risk": "advanced",
+      "category": "dns",
+      "apply": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses 9.9.9.9,149.112.112.112 }\"" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses }\"" }
+      ]
+    },
+    {
+      "id": "dns.adguard",
+      "risk": "advanced",
+      "category": "dns",
+      "apply": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses 94.140.14.14,94.140.15.15 }\"" }
+      ],
+      "undo": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses }\"" }
+      ]
+    }
+  ]
+}

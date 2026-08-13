@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: Version from tag
+        id: ver
+        shell: pwsh
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          if ($tag -notmatch '^v(\d+\.\d+\.\d+)$') { throw "Tag must be vMAJOR.MINOR.PATCH" }
+          "version=$($Matches[1])" >> $env:GITHUB_OUTPUT
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+      - name: Test
+        run: dotnet test OpenWindowUtility.slnx -c Release -p:Version=${{ steps.ver.outputs.version }}
+      - name: Publish portable EXE
+        run: >
+          dotnet publish src/OpenWindowUtility.App/OpenWindowUtility.App.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:Version=${{ steps.ver.outputs.version }}
+          -p:InformationalVersion=${{ steps.ver.outputs.version }}
+          -o artifacts
+      - name: Write latest.json
+        shell: pwsh
+        run: |
+          $exe = "artifacts/OpenWindowUtility.exe"
+          $sha = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          $ver = "${{ steps.ver.outputs.version }}"
+          $tag = "${{ steps.ver.outputs.tag }}"
+          $url = "https://github.com/$($env:GITHUB_REPOSITORY)/releases/download/$tag/OpenWindowUtility.exe"
+          $json = (@{ version = $ver; url = $url; sha256 = $sha } | ConvertTo-Json -Compress)
+          [System.IO.File]::WriteAllText((Join-Path (Get-Location) "artifacts/latest.json"), $json)
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create ${{ steps.ver.outputs.tag }}
+          artifacts/OpenWindowUtility.exe artifacts/latest.json
+          --title "Open Window Utility ${{ steps.ver.outputs.version }}"
+          --generate-notes

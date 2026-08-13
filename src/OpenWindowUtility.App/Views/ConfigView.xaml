@@ -1,0 +1,38 @@
+<UserControl x:Class="OpenWindowUtility.App.Views.ConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:loc="clr-namespace:OpenWindowUtility.App.Markup">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+            <ui:Button Appearance="Primary" DockPanel.Dock="Right" Content="{loc:Loc config.apply}" Command="{Binding ApplyCommand}" />
+            <TextBlock Text="{loc:Loc nav.config}" Style="{StaticResource PageTitle}" VerticalAlignment="Center" />
+        </DockPanel>
+        <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource FooterText}" Text="{Binding FooterText}" />
+        <ScrollViewer>
+            <StackPanel>
+                <TextBlock Text="{loc:Loc config.features}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
+                <ItemsControl ItemsSource="{Binding Features}" ItemTemplate="{StaticResource FeatureCheckTemplate}" />
+                <TextBlock Text="{loc:Loc config.fixes}" Style="{StaticResource SectionLabel}" Margin="0,20,0,8" />
+                <ItemsControl ItemsSource="{Binding Fixes}" ItemTemplate="{StaticResource FeatureCheckTemplate}" />
+                <TextBlock Text="{loc:Loc config.panels}" Style="{StaticResource SectionLabel}" Margin="0,20,0,8" />
+                <ItemsControl ItemsSource="{Binding Panels}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ui:Button Margin="0,0,12,12" HorizontalAlignment="Stretch"
+                                       Content="{Binding Name}"
+                                       Command="{Binding DataContext.OpenPanelCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                       CommandParameter="{Binding}"
+                                       ToolTip="{Binding Description}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

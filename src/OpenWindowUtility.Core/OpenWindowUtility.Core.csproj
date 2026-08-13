@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>OpenWindowUtility.Core</RootNamespace>
+    <AssemblyName>OpenWindowUtility.Core</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="10.0.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\catalogs\apps.json" LogicalName="catalogs.apps.json" />
+    <EmbeddedResource Include="..\..\catalogs\tweaks.json" LogicalName="catalogs.tweaks.json" />
+    <EmbeddedResource Include="..\..\catalogs\features.json" LogicalName="catalogs.features.json" />
+    <EmbeddedResource Include="..\..\catalogs\presets.json" LogicalName="catalogs.presets.json" />
+    <EmbeddedResource Include="..\..\catalogs\i18n\en.json" LogicalName="catalogs.i18n.en.json" />
+    <EmbeddedResource Include="..\..\catalogs\i18n\vi.json" LogicalName="catalogs.i18n.vi.json" />
+  </ItemGroup>
+
+</Project>

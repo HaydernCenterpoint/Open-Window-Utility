@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "presets": {
+    "essential": [
+      "privacy.activity-history",
+      "privacy.location",
+      "privacy.consumer-features",
+      "privacy.telemetry",
+      "privacy.store-search",
+      "network.delivery-optimization",
+      "explorer.end-task",
+      "explorer.auto-discovery",
+      "apps.companion-prevent",
+      "maintenance.restore-point"
+    ]
+  }
+}

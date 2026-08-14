@@ -93,7 +93,6 @@ public partial class ApplicationsViewModel : PageViewModelBase
         }).ToList();
         Categories = new[] { "all" }.Concat(AllItems.Select(x => x.Category).Distinct()).ToList();
         RebuildVisible();
-        _ = RefreshInstalledAsync();
     }
 
     partial void OnSearchTextChanged(string value) => RebuildVisible();

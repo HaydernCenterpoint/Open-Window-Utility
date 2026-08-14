@@ -91,7 +91,6 @@ public partial class ShellViewModel : ObservableObject
             OnPropertyChanged(nameof(UpdateLabel));
             OnPropertyChanged(nameof(UpdateTooltip));
         };
-        _ = CheckAppUpdateAsync();
     }
 
     partial void OnSectionChanged(AppSection value)
@@ -153,7 +152,8 @@ public partial class ShellViewModel : ObservableObject
                 return;
             }
 
-            var found = await App.Host.AppUpdate.CheckAsync(feed, CancellationToken.None).ConfigureAwait(true);
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(8));
+            var found = await App.Host.AppUpdate.CheckAsync(feed, timeout.Token).ConfigureAwait(true);
             if (found is null)
             {
                 _pending = null;

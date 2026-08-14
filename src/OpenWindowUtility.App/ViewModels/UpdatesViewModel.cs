@@ -1,9 +1,20 @@
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OpenWindowUtility.Core.Cleanup;
 using OpenWindowUtility.Core.Updates;
 
 namespace OpenWindowUtility.App.ViewModels;
+
+public sealed class DiskRowViewModel
+{
+    public required string Title { get; init; }
+    public required string Detail { get; init; }
+    public required double UsedPercent { get; init; }
+    public bool IsHigh => UsedPercent >= 90;
+}
 
 public partial class UpdatesViewModel : PageViewModelBase
 {
@@ -28,6 +39,37 @@ public partial class UpdatesViewModel : PageViewModelBase
     [ObservableProperty]
     private string _updateConfiguration = "";
 
+    [ObservableProperty]
+    private string _computerName = "";
+
+    [ObservableProperty]
+    private string _machineLine = "";
+
+    [ObservableProperty]
+    private string _architecture = "";
+
+    [ObservableProperty]
+    private string _processor = "";
+
+    [ObservableProperty]
+    private string _processorMeta = "";
+
+    [ObservableProperty]
+    private string _graphics = "";
+
+    [ObservableProperty]
+    private string _memoryDetail = "";
+
+    [ObservableProperty]
+    private double _memoryUsedPercent;
+
+    [ObservableProperty]
+    private bool _hasDisks;
+
+    public bool MemoryHigh => MemoryUsedPercent >= 90;
+
+    public ObservableCollection<DiskRowViewModel> Disks { get; } = [];
+
     public string AppsVersion => App.Host.Catalog.Apps.Version;
     public string TweaksVersion => App.Host.Catalog.Tweaks.Version;
     public string FeaturesVersion => App.Host.Catalog.Features.Version;
@@ -43,6 +85,9 @@ public partial class UpdatesViewModel : PageViewModelBase
         RefreshSnapshot();
         base.RefreshLanguage();
     }
+
+    [RelayCommand]
+    private void Refresh() => RefreshSnapshot();
 
     [RelayCommand]
     private async Task ApplyDefaultAsync()
@@ -84,6 +129,7 @@ public partial class UpdatesViewModel : PageViewModelBase
 
     private void RefreshSnapshot()
     {
+        var loc = App.Host.Loc;
         var snapshot = App.Host.SystemInfo.GetSnapshot();
         ProductName = snapshot.ProductName;
         DisplayVersion = snapshot.DisplayVersion;
@@ -92,5 +138,51 @@ public partial class UpdatesViewModel : PageViewModelBase
         BootTime = snapshot.BootTime;
         LastUpdate = snapshot.LastUpdate;
         UpdateConfiguration = snapshot.UpdateConfiguration;
+
+        var hardware = App.Host.SystemInfo.GetHardware();
+        ComputerName = hardware.ComputerName;
+        Architecture = hardware.Architecture;
+        MachineLine = string.Join(" · ", new[] { hardware.Manufacturer, hardware.Model }
+            .Where(x => !string.IsNullOrWhiteSpace(x) && !x.Equals("Unknown", StringComparison.OrdinalIgnoreCase)));
+        if (MachineLine.Length == 0)
+        {
+            MachineLine = loc["updates.unknown"];
+        }
+
+        Processor = hardware.Processor;
+        ProcessorMeta = string.Format(
+            CultureInfo.CurrentCulture,
+            loc["updates.cpu.meta"],
+            hardware.Cores,
+            hardware.Threads,
+            string.IsNullOrWhiteSpace(hardware.Clock) ? loc["updates.unknown"] : hardware.Clock);
+        Graphics = hardware.Graphics.Count == 0
+            ? loc["updates.unknown"]
+            : string.Join(", ", hardware.Graphics);
+        MemoryUsedPercent = hardware.MemoryUsedPercent;
+        MemoryDetail = string.Format(
+            CultureInfo.CurrentCulture,
+            loc["updates.memory.used"],
+            CleanupFormatter.FormatBytes(hardware.MemoryUsedBytes),
+            CleanupFormatter.FormatBytes(hardware.MemoryTotalBytes));
+        OnPropertyChanged(nameof(MemoryHigh));
+
+        Disks.Clear();
+        foreach (var disk in hardware.Disks)
+        {
+            var title = string.IsNullOrWhiteSpace(disk.Label) ? disk.Id : disk.Id + "  " + disk.Label;
+            Disks.Add(new DiskRowViewModel
+            {
+                Title = title,
+                Detail = string.Format(
+                    CultureInfo.CurrentCulture,
+                    loc["updates.disk.free"],
+                    CleanupFormatter.FormatBytes(disk.FreeBytes),
+                    CleanupFormatter.FormatBytes(disk.TotalBytes)),
+                UsedPercent = disk.UsedPercent
+            });
+        }
+
+        HasDisks = Disks.Count > 0;
     }
 }

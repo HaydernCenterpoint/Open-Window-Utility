@@ -66,6 +66,7 @@ public sealed class FeatureEntry
 {
     public required string Id { get; init; }
     public required FeatureKind Kind { get; init; }
+    public bool RequiresConfirm { get; init; }
     public List<string> Editions { get; init; } = [];
     public List<Operation> Apply { get; init; } = [];
     public List<Operation> Undo { get; init; } = [];

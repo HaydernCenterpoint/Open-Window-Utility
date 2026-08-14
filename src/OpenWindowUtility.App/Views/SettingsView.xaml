@@ -12,6 +12,10 @@
             <ComboBoxItem Tag="vi" Content="{loc:Loc settings.language.vi}" />
         </ComboBox>
         <CheckBox Margin="0,20,0,0" IsChecked="{Binding CreateRestorePoint}" Content="{loc:Loc settings.restore}" />
+        <TextBlock Text="{loc:Loc settings.data}" Style="{StaticResource SectionLabel}" Margin="0,24,0,8" />
+        <TextBox Width="480" HorizontalAlignment="Left" IsReadOnly="True" Text="{Binding DataPath, Mode=OneWay}" />
+        <TextBlock Margin="0,8,0,0" Style="{StaticResource MetaLabel}" TextWrapping="Wrap"
+                   Text="{loc:Loc settings.data.hint}" />
         <TextBlock Text="{loc:Loc settings.updateFeed}" Style="{StaticResource SectionLabel}" Margin="0,24,0,8" />
         <TextBox Width="480" HorizontalAlignment="Left"
                  Text="{Binding UpdateFeedUrl, UpdateSourceTrigger=LostFocus}" />

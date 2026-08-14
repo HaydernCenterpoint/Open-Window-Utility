@@ -17,7 +17,11 @@ public static class ProcessAllowlist
         "choco.exe", "choco",
         "powershell.exe",
         "schtasks.exe", "schtasks",
-        "manage-bde.exe", "manage-bde"
+        "manage-bde.exe", "manage-bde",
+        "ipconfig.exe", "ipconfig",
+        "wsreset.exe", "wsreset",
+        "w32tm.exe", "w32tm",
+        "gpupdate.exe", "gpupdate"
     };
 
     private static readonly HashSet<string> ShellDocuments = new(StringComparer.OrdinalIgnoreCase)
@@ -33,7 +37,18 @@ public static class ProcessAllowlist
         "firewall.cpl",
         "wscui.cpl",
         "desk.cpl",
-        "compmgmt.msc"
+        "compmgmt.msc",
+        "desk.cpl",
+        "inetcpl.cpl",
+        "lusrmgr.msc",
+        "services.msc",
+        "taskschd.msc",
+        "devmgmt.msc",
+        "diskmgmt.msc",
+        "eventvwr.msc",
+        "gpedit.msc",
+        "secpol.msc",
+        "certmgr.msc"
     };
 
     public static bool IsAllowed(string fileName, bool useShellExecute)

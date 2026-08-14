@@ -6,7 +6,11 @@ Inspired by [Chris Titus Tech WinUtil](https://christitus.com/windows-tool/). Th
 
 ## Download
 
-Get the portable EXE from [Releases](https://github.com/HaydernCenterpoint/Open-Window-Utility/releases/latest). The in-app version chip checks this feed for updates.
+Get the portable EXE from [Releases](https://github.com/HaydernCenterpoint/Open-Window-Utility/releases/latest). Copy the EXE to a USB or folder and run it as Administrator — no PowerShell, no install.
+
+Tweaks, features, cleanup, and This PC work offline. Installing apps and checking for a newer EXE need the internet. Click the version chip when you want an update; startup does not call the network.
+
+Settings, logs, and the undo journal live in a `data` folder next to the EXE when that location is writable.
 
 ```powershell
 git clone https://github.com/HaydernCenterpoint/Open-Window-Utility.git

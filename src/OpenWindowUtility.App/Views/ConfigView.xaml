@@ -5,34 +5,106 @@
              xmlns:loc="clr-namespace:OpenWindowUtility.App.Markup">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
-            <ui:Button Appearance="Primary" DockPanel.Dock="Right" Content="{loc:Loc config.apply}" Command="{Binding ApplyCommand}" />
-            <TextBlock Text="{loc:Loc nav.config}" Style="{StaticResource PageTitle}" VerticalAlignment="Center" />
+            <ui:Button Appearance="Primary" DockPanel.Dock="Right" Content="{loc:Loc config.apply}"
+                       Command="{Binding ApplyCommand}" />
+            <StackPanel>
+                <TextBlock Text="{loc:Loc nav.config}" Style="{StaticResource PageTitle}" />
+                <TextBlock Text="{loc:Loc config.subtitle}" Style="{StaticResource PageSubtitle}" Margin="0,4,24,0" />
+            </StackPanel>
         </DockPanel>
         <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource FooterText}" Text="{Binding FooterText}" />
-        <ScrollViewer>
-            <StackPanel>
-                <TextBlock Text="{loc:Loc config.features}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
-                <ItemsControl ItemsSource="{Binding Features}" ItemTemplate="{StaticResource FeatureCheckTemplate}" />
-                <TextBlock Text="{loc:Loc config.fixes}" Style="{StaticResource SectionLabel}" Margin="0,20,0,8" />
-                <ItemsControl ItemsSource="{Binding Fixes}" ItemTemplate="{StaticResource FeatureCheckTemplate}" />
-                <TextBlock Text="{loc:Loc config.panels}" Style="{StaticResource SectionLabel}" Margin="0,20,0,8" />
-                <ItemsControl ItemsSource="{Binding Panels}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="2" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <ui:Button Margin="0,0,12,12" HorizontalAlignment="Stretch"
-                                       Content="{Binding Name}"
-                                       Command="{Binding DataContext.OpenPanelCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                       CommandParameter="{Binding}"
-                                       ToolTip="{Binding Description}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </ScrollViewer>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource Card}" Margin="0,0,8,0" Padding="14,14,8,14">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,6,10">
+                        <TextBlock Text="{loc:Loc config.features}" Style="{StaticResource SectionLabel}" />
+                        <TextBlock Text="{loc:Loc config.features.hint}" Style="{StaticResource MetaLabel}"
+                                   TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Features}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected}" Margin="0,0,6,10"
+                                              VerticalContentAlignment="Top"
+                                              IsEnabled="{Binding IsEditionSupported}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding Description}" Style="{StaticResource MetaLabel}"
+                                                       TextWrapping="Wrap" />
+                                            <TextBlock Text="{loc:Loc config.edition}" Style="{StaticResource MetaLabel}"
+                                                       Foreground="#C4A574"
+                                                       Visibility="{Binding IsEditionSupported, Converter={StaticResource BoolToVisInvert}}" />
+                                        </StackPanel>
+                                    </CheckBox>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="4,0,4,0" Padding="14,14,8,14">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,6,10">
+                        <TextBlock Text="{loc:Loc config.fixes}" Style="{StaticResource SectionLabel}" />
+                        <TextBlock Text="{loc:Loc config.fixes.hint}" Style="{StaticResource MetaLabel}"
+                                   TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Fixes}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,0,6,14" LastChildFill="True">
+                                        <ui:Button DockPanel.Dock="Right" VerticalAlignment="Top" Margin="10,0,0,0"
+                                                   Content="{loc:Loc config.run}"
+                                                   Command="{Binding DataContext.RunFixCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"
+                                                   IsEnabled="{Binding IsEditionSupported}" />
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding Description}" Style="{StaticResource MetaLabel}"
+                                                       TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource Card}" Margin="8,0,0,0">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+                        <TextBlock Text="{loc:Loc config.panels}" Style="{StaticResource SectionLabel}" />
+                        <TextBlock Text="{loc:Loc config.panels.hint}" Style="{StaticResource MetaLabel}"
+                                   TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Panels}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource ConfigPanelButton}"
+                                            Content="{Binding Name}"
+                                            ToolTip="{Binding Description}"
+                                            Command="{Binding DataContext.OpenPanelCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            IsEnabled="{Binding IsEditionSupported}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+        </Grid>
     </DockPanel>
 </UserControl>

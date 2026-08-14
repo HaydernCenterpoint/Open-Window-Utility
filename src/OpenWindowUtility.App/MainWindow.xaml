@@ -18,7 +18,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ui:TitleBar Title="{loc:Loc app.name}">
+        <ui:TitleBar Title="{loc:Loc app.brand}"
+                     Icon="pack://application:,,,/Assets/owu.png">
             <ui:TitleBar.TrailingContent>
                 <Button Style="{StaticResource TitleUpdateButton}"
                         Command="{Binding AppUpdateCommand}"
@@ -49,52 +50,43 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <DockPanel>
-                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="18,6,16,18">
-                            <Image Width="28" Height="28"
-                                   Source="pack://application:,,,/Assets/owu.png"
-                                   RenderOptions.BitmapScalingMode="HighQuality" />
-                            <TextBlock Text="{loc:Loc app.brand}" FontWeight="SemiBold" FontSize="13"
-                                       Margin="10,0,0,0" VerticalAlignment="Center" />
-                        </StackPanel>
-                        <StackPanel>
-                            <Button Tag="Applications" Command="{Binding GoToCommand}" CommandParameter="Applications"
-                                    Style="{StaticResource NavButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <ui:SymbolIcon Symbol="Box24" FontSize="18" Margin="0,0,10,0" />
-                                    <TextBlock Text="{loc:Loc nav.applications}" VerticalAlignment="Center" />
-                                </StackPanel>
-                            </Button>
-                            <Button Tag="Tweaks" Command="{Binding GoToCommand}" CommandParameter="Tweaks"
-                                    Style="{StaticResource NavButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <ui:SymbolIcon Symbol="Wrench24" FontSize="18" Margin="0,0,10,0" />
-                                    <TextBlock Text="{loc:Loc nav.tweaks}" VerticalAlignment="Center" />
-                                </StackPanel>
-                            </Button>
-                            <Button Tag="Config" Command="{Binding GoToCommand}" CommandParameter="Config"
-                                    Style="{StaticResource NavButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <ui:SymbolIcon Symbol="Desktop24" FontSize="18" Margin="0,0,10,0" />
-                                    <TextBlock Text="{loc:Loc nav.config}" VerticalAlignment="Center" />
-                                </StackPanel>
-                            </Button>
-                            <Button Tag="Cleanup" Command="{Binding GoToCommand}" CommandParameter="Cleanup"
-                                    Style="{StaticResource NavButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <ui:SymbolIcon Symbol="Delete24" FontSize="18" Margin="0,0,10,0" />
-                                    <TextBlock Text="{loc:Loc nav.cleanup}" VerticalAlignment="Center" />
-                                </StackPanel>
-                            </Button>
-                            <Button Tag="Updates" Command="{Binding GoToCommand}" CommandParameter="Updates"
-                                    Style="{StaticResource NavButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <ui:SymbolIcon Symbol="ArrowSync24" FontSize="18" Margin="0,0,10,0" />
-                                    <TextBlock Text="{loc:Loc nav.updates}" VerticalAlignment="Center" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </DockPanel>
+                    <StackPanel Margin="0,8,0,0">
+                        <Button Tag="Applications" Command="{Binding GoToCommand}" CommandParameter="Applications"
+                                Style="{StaticResource NavButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Box24" FontSize="18" Margin="0,0,10,0" />
+                                <TextBlock Text="{loc:Loc nav.applications}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Tag="Tweaks" Command="{Binding GoToCommand}" CommandParameter="Tweaks"
+                                Style="{StaticResource NavButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Wrench24" FontSize="18" Margin="0,0,10,0" />
+                                <TextBlock Text="{loc:Loc nav.tweaks}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Tag="Config" Command="{Binding GoToCommand}" CommandParameter="Config"
+                                Style="{StaticResource NavButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Desktop24" FontSize="18" Margin="0,0,10,0" />
+                                <TextBlock Text="{loc:Loc nav.config}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Tag="Cleanup" Command="{Binding GoToCommand}" CommandParameter="Cleanup"
+                                Style="{StaticResource NavButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Delete24" FontSize="18" Margin="0,0,10,0" />
+                                <TextBlock Text="{loc:Loc nav.cleanup}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Tag="Updates" Command="{Binding GoToCommand}" CommandParameter="Updates"
+                                Style="{StaticResource NavButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="ArrowSync24" FontSize="18" Margin="0,0,10,0" />
+                                <TextBlock Text="{loc:Loc nav.updates}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </DockPanel>
             </Border>
             <Grid Grid.Column="1" Margin="24,4,24,16">

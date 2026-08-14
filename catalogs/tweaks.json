@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "items": [
     {
       "id": "privacy.activity-history",
@@ -445,6 +445,331 @@
       ],
       "undo": [
         { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Get-NetAdapter | Where-Object Status -eq Up | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses }\"" }
+      ]
+    },
+    {
+      "id": "privacy.advertising-id",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo", "name": "Enabled", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo", "name": "Enabled", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "privacy.tailored-experiences",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent", "name": "DisableTailoredExperiencesWithDiagnosticData", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent", "name": "DisableTailoredExperiencesWithDiagnosticData" }
+      ]
+    },
+    {
+      "id": "privacy.feedback-notifications",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", "name": "DoNotShowFeedbackNotifications", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", "name": "DoNotShowFeedbackNotifications" }
+      ]
+    },
+    {
+      "id": "privacy.ink-typing",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\InputPersonalization", "name": "RestrictImplicitInkCollection", "valueKind": "dword", "value": 1 },
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\InputPersonalization", "name": "RestrictImplicitTextCollection", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\InputPersonalization", "name": "RestrictImplicitInkCollection", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\InputPersonalization", "name": "RestrictImplicitTextCollection", "valueKind": "dword", "value": 0 }
+      ]
+    },
+    {
+      "id": "privacy.ceip",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\SQMClient\\Windows", "name": "CEIPEnable", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\SQMClient\\Windows", "name": "CEIPEnable" }
+      ]
+    },
+    {
+      "id": "privacy.web-search",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "name": "DisableWebSearch", "valueKind": "dword", "value": 1 },
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "name": "ConnectedSearchUseWeb", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "name": "DisableWebSearch" },
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "name": "ConnectedSearchUseWeb" }
+      ]
+    },
+    {
+      "id": "privacy.speech-online",
+      "risk": "essential",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy", "name": "HasAccepted", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy", "name": "HasAccepted", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "explorer.search-highlights",
+      "risk": "essential",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer", "name": "DisableSearchHighlight", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer", "name": "DisableSearchHighlight" }
+      ]
+    },
+    {
+      "id": "explorer.widgets",
+      "risk": "essential",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "TaskbarDa", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "TaskbarDa", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "explorer.taskbar-chat",
+      "risk": "essential",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "TaskbarMn", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "TaskbarMn", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "ai.recall-disable",
+      "risk": "advanced",
+      "category": "ai",
+      "requiresConfirm": true,
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI", "name": "DisableAIDataAnalysis", "valueKind": "dword", "value": 1 },
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI", "name": "DisableAIDataAnalysis", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI", "name": "DisableAIDataAnalysis" },
+        { "type": "registryDelete", "hive": "HKCU", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI", "name": "DisableAIDataAnalysis" }
+      ]
+    },
+    {
+      "id": "privacy.app-compat-inventory",
+      "risk": "advanced",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat", "name": "DisableInventory", "valueKind": "dword", "value": 1 },
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat", "name": "DisableUAR", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat", "name": "DisableInventory" },
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\AppCompat", "name": "DisableUAR" }
+      ]
+    },
+    {
+      "id": "privacy.cloud-clipboard",
+      "risk": "advanced",
+      "category": "privacy",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "AllowCrossDeviceClipboard", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System", "name": "AllowCrossDeviceClipboard" }
+      ]
+    },
+    {
+      "id": "search.cortana-disable",
+      "risk": "advanced",
+      "category": "search",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "name": "AllowCortana", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "name": "AllowCortana" }
+      ]
+    },
+    {
+      "id": "network.llmnr-disable",
+      "risk": "advanced",
+      "category": "network",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows NT\\DNSClient", "name": "EnableMulticast", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows NT\\DNSClient", "name": "EnableMulticast" }
+      ]
+    },
+    {
+      "id": "gaming.disable-game-dvr",
+      "risk": "advanced",
+      "category": "gaming",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR", "name": "AppCaptureEnabled", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKCU", "path": "System\\GameConfigStore", "name": "GameDVR_Enabled", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR", "name": "AllowGameDVR", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR", "name": "AppCaptureEnabled", "valueKind": "dword", "value": 1 },
+        { "type": "registrySet", "hive": "HKCU", "path": "System\\GameConfigStore", "name": "GameDVR_Enabled", "valueKind": "dword", "value": 1 },
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR", "name": "AllowGameDVR" }
+      ]
+    },
+    {
+      "id": "power.fast-startup-disable",
+      "risk": "advanced",
+      "category": "power",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power", "name": "HiberbootEnabled", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power", "name": "HiberbootEnabled", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "explorer.autoplay-disable",
+      "risk": "advanced",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\AutoplayHandlers", "name": "DisableAutoplay", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\AutoplayHandlers", "name": "DisableAutoplay", "valueKind": "dword", "value": 0 }
+      ]
+    },
+    {
+      "id": "ui.news-and-interests",
+      "risk": "advanced",
+      "category": "ui",
+      "apply": [
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Dsh", "name": "AllowNewsAndInterests", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Feeds", "name": "EnableFeeds", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Dsh", "name": "AllowNewsAndInterests" },
+        { "type": "registryDelete", "hive": "HKLM", "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Feeds", "name": "EnableFeeds" }
+      ]
+    },
+    {
+      "id": "explorer.launch-this-pc",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "LaunchTo", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "LaunchTo", "valueKind": "dword", "value": 2 }
+      ]
+    },
+    {
+      "id": "explorer.compact-view",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "UseCompactMode", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "UseCompactMode", "valueKind": "dword", "value": 0 }
+      ]
+    },
+    {
+      "id": "explorer.taskbar-left",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "TaskbarAl", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "TaskbarAl", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "explorer.recent-files",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer", "name": "ShowRecent", "valueKind": "dword", "value": 0 },
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer", "name": "ShowFrequent", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer", "name": "ShowRecent", "valueKind": "dword", "value": 1 },
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer", "name": "ShowFrequent", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "explorer.shake-disable",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "DisallowShaking", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "DisallowShaking", "valueKind": "dword", "value": 0 }
+      ]
+    },
+    {
+      "id": "explorer.task-view-hide",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "ShowTaskViewButton", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "ShowTaskViewButton", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "explorer.clock-seconds",
+      "risk": "preference",
+      "category": "explorer",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "ShowSecondsInSystemClock", "valueKind": "dword", "value": 1 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "name": "ShowSecondsInSystemClock", "valueKind": "dword", "value": 0 }
+      ]
+    },
+    {
+      "id": "ui.transparency-off",
+      "risk": "preference",
+      "category": "ui",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "name": "EnableTransparency", "valueKind": "dword", "value": 0 }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "name": "EnableTransparency", "valueKind": "dword", "value": 1 }
+      ]
+    },
+    {
+      "id": "ui.menu-delay",
+      "risk": "preference",
+      "category": "ui",
+      "apply": [
+        { "type": "registrySet", "hive": "HKCU", "path": "Control Panel\\Desktop", "name": "MenuShowDelay", "valueKind": "string", "value": "0" }
+      ],
+      "undo": [
+        { "type": "registrySet", "hive": "HKCU", "path": "Control Panel\\Desktop", "name": "MenuShowDelay", "valueKind": "string", "value": "400" }
       ]
     }
   ]

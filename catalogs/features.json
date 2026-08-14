@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "items": [
     {
       "id": "feature.dotnet",
@@ -110,6 +110,7 @@
     {
       "id": "fix.reset-network",
       "kind": "fix",
+      "requiresConfirm": true,
       "apply": [
         { "type": "process", "fileName": "netsh.exe", "arguments": "int ip reset" },
         { "type": "process", "fileName": "netsh.exe", "arguments": "winsock reset" }
@@ -119,6 +120,7 @@
     {
       "id": "fix.system-scan",
       "kind": "fix",
+      "requiresConfirm": true,
       "apply": [
         { "type": "process", "fileName": "sfc.exe", "arguments": "/scannow" },
         { "type": "process", "fileName": "dism.exe", "arguments": "/Online /Cleanup-Image /RestoreHealth" }
@@ -234,6 +236,256 @@
       "kind": "panel",
       "apply": [
         { "type": "process", "fileName": "rstrui.exe", "waitForExit": false }
+      ],
+      "undo": []
+    },
+    {
+      "id": "feature.telnet",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "TelnetClient", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "TelnetClient", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.tftp",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "TFTP", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "TFTP", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.work-folders",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "WorkFolders-Client", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "WorkFolders-Client", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.internet-printing",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "Printing-Foundation-InternetPrinting-Client", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "Printing-Foundation-InternetPrinting-Client", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.xps-printing",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "Printing-XPSServices-Features", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "Printing-XPSServices-Features", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.fax-client",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "FaxServicesClientPackage", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "FaxServicesClientPackage", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.tiff-ifilter",
+      "kind": "feature",
+      "apply": [
+        { "type": "dismFeature", "featureName": "TIFFIFilter", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "TIFFIFilter", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.containers",
+      "kind": "feature",
+      "editions": ["Professional", "ProfessionalWorkstation", "Enterprise", "Education"],
+      "apply": [
+        { "type": "dismFeature", "featureName": "Containers", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "Containers", "enable": false }
+      ]
+    },
+    {
+      "id": "feature.app-guard",
+      "kind": "feature",
+      "editions": ["Professional", "ProfessionalWorkstation", "Enterprise", "Education"],
+      "apply": [
+        { "type": "dismFeature", "featureName": "Windows-Defender-ApplicationGuard", "enable": true }
+      ],
+      "undo": [
+        { "type": "dismFeature", "featureName": "Windows-Defender-ApplicationGuard", "enable": false }
+      ]
+    },
+    {
+      "id": "fix.flush-dns",
+      "kind": "fix",
+      "apply": [
+        { "type": "process", "fileName": "ipconfig.exe", "arguments": "/flushdns" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.restart-explorer",
+      "kind": "fix",
+      "apply": [
+        { "type": "process", "fileName": "powershell.exe", "arguments": "-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"Stop-Process -Name explorer -Force\"" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.restart-audio",
+      "kind": "fix",
+      "apply": [
+        { "type": "serviceStartup", "serviceName": "Audiosrv", "startupType": "automatic", "stop": true },
+        { "type": "serviceStartup", "serviceName": "Audiosrv", "startupType": "automatic", "start": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.restart-spooler",
+      "kind": "fix",
+      "apply": [
+        { "type": "serviceStartup", "serviceName": "Spooler", "startupType": "automatic", "stop": true },
+        { "type": "serviceStartup", "serviceName": "Spooler", "startupType": "automatic", "start": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.sync-time",
+      "kind": "fix",
+      "apply": [
+        { "type": "serviceStartup", "serviceName": "W32Time", "startupType": "automatic", "start": true },
+        { "type": "process", "fileName": "w32tm.exe", "arguments": "/resync" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.component-cleanup",
+      "kind": "fix",
+      "requiresConfirm": true,
+      "apply": [
+        { "type": "process", "fileName": "dism.exe", "arguments": "/Online /Cleanup-Image /StartComponentCleanup" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.reset-store",
+      "kind": "fix",
+      "apply": [
+        { "type": "process", "fileName": "wsreset.exe", "waitForExit": false }
+      ],
+      "undo": []
+    },
+    {
+      "id": "fix.gpupdate",
+      "kind": "fix",
+      "apply": [
+        { "type": "process", "fileName": "gpupdate.exe", "arguments": "/force" }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.display",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "desk.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.internet-options",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "inetcpl.cpl", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.devices",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "devmgmt.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.disk",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "diskmgmt.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.services",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "services.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.tasks",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "taskschd.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.events",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "eventvwr.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.users",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "lusrmgr.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.group-policy",
+      "kind": "panel",
+      "editions": ["Professional", "ProfessionalWorkstation", "Enterprise", "Education"],
+      "apply": [
+        { "type": "process", "fileName": "gpedit.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.local-security",
+      "kind": "panel",
+      "editions": ["Professional", "ProfessionalWorkstation", "Enterprise", "Education"],
+      "apply": [
+        { "type": "process", "fileName": "secpol.msc", "waitForExit": false, "useShellExecute": true }
+      ],
+      "undo": []
+    },
+    {
+      "id": "panel.certificates",
+      "kind": "panel",
+      "apply": [
+        { "type": "process", "fileName": "certmgr.msc", "waitForExit": false, "useShellExecute": true }
       ],
       "undo": []
     }

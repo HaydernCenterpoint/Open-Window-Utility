@@ -109,8 +109,47 @@ public partial class ConfigViewModel : PageViewModelBase
     }
 
     [RelayCommand]
+    private async Task RunFixAsync(FeatureItemViewModel item)
+    {
+        if (item.Kind != FeatureKind.Fix)
+        {
+            return;
+        }
+
+        if (!item.IsEditionSupported)
+        {
+            MessageBox.Show(App.Host.Loc["config.edition"], App.Host.Loc["app.name"],
+                MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        if (item.Entry.RequiresConfirm)
+        {
+            var result = MessageBox.Show(
+                string.Format(App.Host.Loc["config.confirmFix"], item.Name),
+                App.Host.Loc["app.name"],
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+        }
+
+        await App.Host.Jobs.RunAsync(item.Name, async (log, ct) =>
+        {
+            await App.Host.Features.ApplyAsync([item.Entry], log, ct).ConfigureAwait(true);
+        });
+    }
+
+    [RelayCommand]
     private async Task OpenPanelAsync(FeatureItemViewModel item)
     {
+        if (item.Kind != FeatureKind.Panel)
+        {
+            return;
+        }
+
         await App.Host.Jobs.RunAsync(item.Name, async (log, ct) =>
         {
             await App.Host.Features.ApplyAsync([item.Entry], log, ct).ConfigureAwait(true);

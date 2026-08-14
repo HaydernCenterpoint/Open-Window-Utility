@@ -8,6 +8,7 @@ Open Window Utility changes the operating system. Most tweaks are reversible thr
 - Keep **Create a restore point before applying tweaks** enabled unless System Restore is unavailable.
 - Prefer **Select Essential Tweaks** over ticking Advanced items blindly.
 - Export a profile only after you have tested the selection.
+- The EXE is portable. Settings and the undo journal follow the `data` folder next to the EXE (or AppData if that folder is not writable). Restore points stay on the Windows install.
 
 ## High impact (extra confirmation)
 
@@ -17,11 +18,16 @@ Open Window Utility changes the operating system. Most tweaks are reversible thr
 | OneDrive sync - Disable | Policy blocks sync; files already local stay local. |
 | Disable All Updates | No security patches until you apply Default. Type `DISABLE` to confirm. |
 | Copilot - Disable | Removes the Copilot AppX package for all users. |
+| Recall - Disable | Policy blocks Windows Recall snapshots. Confirm first. |
+| Fast startup - Disable | Full shutdown instead of hybrid boot; laptops may take longer to start. |
+| LLMNR - Disable | Can break name lookup on some local networks. |
 | IPv6 disable | Can break some VPN / modern networks. Prefer "IPv4 preferred" first. |
 | Hibernation disable | Deletes/stops hiberfil.sys; laptops lose hibernate. |
 | Deep Cleanup | Deletes selected junk (temp, caches, Recycle Bin). Scan first; Deep items (browser cache, Prefetch, Windows.old) stay unchecked. Windows.old needs a second confirm and removes upgrade rollback. |
 | App self-update | Replaces the running EXE after SHA-256 check. Confirm first; the app restarts. Only HTTPS feeds and allowlisted hosts. |
-| Hyper-V / Sandbox / WSL | Needs a compatible Windows edition; may require reboot. |
+| Hyper-V / Sandbox / WSL / Containers / Application Guard | Needs a compatible Windows edition; may require reboot. |
+| Network reset | Resets TCP/IP and Winsock. A reboot is often required. |
+| System scan / Component cleanup | SFC and DISM can take a long time and should not be cancelled mid-run. |
 
 ## What "Default" Windows Update does
 

@@ -2,6 +2,7 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using OpenWindowUtility.Core;
 using OpenWindowUtility.Core.Profiles;
 
 namespace OpenWindowUtility.App.ViewModels;
@@ -16,6 +17,8 @@ public partial class SettingsViewModel : PageViewModelBase
 
     [ObservableProperty]
     private string _updateFeedUrl = "";
+
+    public string DataPath => AppPaths.Root;
 
     public SettingsViewModel()
     {

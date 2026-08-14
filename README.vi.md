@@ -6,7 +6,11 @@ Lấy cảm hứng từ [Chris Titus Tech WinUtil](https://christitus.com/window
 
 ## Tải về
 
-EXE portable nằm ở [Releases](https://github.com/HaydernCenterpoint/Open-Window-Utility/releases/latest). Chip phiên bản trong app kiểm tra feed này.
+EXE portable nằm ở [Releases](https://github.com/HaydernCenterpoint/Open-Window-Utility/releases/latest). Copy EXE sang USB hoặc thư mục rồi chạy với quyền Administrator — không cần PowerShell, không cần cài đặt.
+
+Tinh chỉnh, tính năng, dọn rác và Máy này chạy được khi không có mạng. Cài app và kiểm tra bản EXE mới cần internet. Bấm chip phiên bản khi muốn cập nhật; lúc mở app không gọi mạng.
+
+Cài đặt, log và journal hoàn tác nằm trong thư mục `data` cạnh EXE nếu ghi được.
 
 ```powershell
 git clone https://github.com/HaydernCenterpoint/Open-Window-Utility.git

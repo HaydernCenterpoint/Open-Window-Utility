@@ -1,3 +1,4 @@
+using OpenWindowUtility.Core;
 using OpenWindowUtility.Core.Catalog;
 using OpenWindowUtility.Core.Jobs;
 using OpenWindowUtility.Core.Operations;
@@ -15,6 +16,10 @@ public sealed class CatalogLoaderTests
         Assert.NotEmpty(catalog.Apps.Items);
         Assert.NotEmpty(catalog.Tweaks.Items);
         Assert.NotEmpty(catalog.Features.Items);
+        Assert.Contains(catalog.Features.Items, x => x.Id == "panel.computer-management");
+        Assert.Contains(catalog.Features.Items, x => x.Id == "fix.flush-dns");
+        Assert.Contains(catalog.Features.Items, x => x.Id == "feature.telnet");
+        Assert.True(catalog.Features.Items.Count(x => x.Kind == FeatureKind.Panel) >= 20);
         Assert.True(catalog.Presets.Presets.ContainsKey("essential"));
         Assert.Equal(catalog.Apps.Items.Count, catalog.Apps.Items.Select(x => x.Id).Distinct().Count());
         Assert.Contains(catalog.Apps.Items, x => x.Id == "vscodium");
@@ -23,6 +28,9 @@ public sealed class CatalogLoaderTests
         Assert.Contains(catalog.Apps.Items, x => x.Id == "sourcetree" && !string.IsNullOrWhiteSpace(x.Icon));
         Assert.Contains(catalog.Tweaks.Items, x => x.Id == "dns.cloudflare");
         Assert.Contains(catalog.Tweaks.Items, x => x.Id == "power.ultimate-performance");
+        Assert.Contains(catalog.Tweaks.Items, x => x.Id == "privacy.advertising-id");
+        Assert.Contains(catalog.Tweaks.Items, x => x.Id == "ai.recall-disable" && x.RequiresConfirm);
+        Assert.True(catalog.Tweaks.Items.Count >= 60);
         Assert.All(catalog.Apps.Items, app =>
         {
             var url = AppIcon.UrlFor(app);
@@ -138,10 +146,76 @@ public sealed class UpdatePolicyTests
     }
 }
 
+public sealed class AppPathsTests
+{
+    [Fact]
+    public void ChooseRoot_PrefersWritableExeFolder()
+    {
+        var exe = Path.Combine(Path.GetTempPath(), "owu-exe");
+        var appData = Path.Combine(Path.GetTempPath(), "owu-appdata");
+        Assert.Equal(
+            Path.Combine(exe, AppPaths.DataFolderName),
+            AppPaths.ChooseRoot(exe, appData, _ => true));
+        Assert.Equal(
+            Path.Combine(appData, AppPaths.ProductName),
+            AppPaths.ChooseRoot(exe, appData, _ => false));
+        Assert.Equal(
+            Path.Combine(appData, AppPaths.ProductName),
+            AppPaths.ChooseRoot(null, appData, _ => true));
+    }
+
+    [Fact]
+    public void EnsureCreated_UsesOverrideRoot()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "owu-root-" + Guid.NewGuid().ToString("N"));
+        AppPaths.OverrideRoot(dir);
+        try
+        {
+            AppPaths.EnsureCreated();
+            Assert.Equal(dir, AppPaths.Root);
+            Assert.True(Directory.Exists(AppPaths.Logs));
+            Assert.True(Directory.Exists(AppPaths.Updates));
+        }
+        finally
+        {
+            AppPaths.OverrideRoot(null);
+            if (Directory.Exists(dir))
+            {
+                Directory.Delete(dir, recursive: true);
+            }
+        }
+    }
+}
+
+public sealed class HardwareSnapshotTests
+{
+    [Fact]
+    public void UsedShare_ComputesPercent()
+    {
+        Assert.Equal(0, HardwareSnapshot.UsedShare(0, 0));
+        Assert.Equal(50, HardwareSnapshot.UsedShare(8, 4));
+        Assert.Equal(100, HardwareSnapshot.UsedShare(10, 0));
+        Assert.Equal(0, HardwareSnapshot.UsedShare(10, 10));
+        Assert.Equal(75, new DiskVolume { Id = "C:", Label = "OS", TotalBytes = 8, FreeBytes = 2 }.UsedPercent);
+    }
+
+    [Fact]
+    public void GetHardware_ReadsLocalMachine()
+    {
+        var hardware = new SystemInfoService().GetHardware();
+        Assert.False(string.IsNullOrWhiteSpace(hardware.ComputerName));
+        Assert.False(string.IsNullOrWhiteSpace(hardware.Processor));
+        Assert.True(hardware.MemoryTotalBytes >= 0);
+        Assert.NotNull(hardware.Disks);
+    }
+}
+
 public sealed class ProcessAllowlistTests
 {
     [Theory]
     [InlineData("dism.exe", false, true)]
+    [InlineData("ipconfig.exe", false, true)]
+    [InlineData("gpedit.msc", true, true)]
     [InlineData("sysdm.cpl", true, true)]
     [InlineData("cmd.exe", false, false)]
     [InlineData("powershell.exe", false, true)]

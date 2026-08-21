@@ -4,7 +4,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:loc="clr-namespace:OpenWindowUtility.App.Markup">
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,14">
             <ui:Button DockPanel.Dock="Right" Content="{loc:Loc updates.refresh}" Command="{Binding RefreshCommand}" />
             <StackPanel>
                 <TextBlock Text="{loc:Loc updates.title}" Style="{StaticResource PageTitle}" />
@@ -13,34 +13,34 @@
         </DockPanel>
         <ScrollViewer>
             <StackPanel>
-                <Grid Margin="0,0,0,12">
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Border Style="{StaticResource Card}" Margin="0,0,8,0">
+                    <Border Style="{StaticResource Card}" Margin="0,0,10,0">
                         <StackPanel>
                             <TextBlock Text="{loc:Loc updates.cpu}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
-                            <TextBlock Text="{Binding Processor}" TextWrapping="Wrap" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding Processor}" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="13" />
                             <TextBlock Text="{Binding ProcessorMeta}" Style="{StaticResource MetaLabel}" Margin="0,6,0,0"
                                        TextWrapping="Wrap" />
-                            <TextBlock Text="{loc:Loc updates.graphics}" Style="{StaticResource SectionLabel}" Margin="0,12,0,6" />
-                            <TextBlock Text="{Binding Graphics}" TextWrapping="Wrap" />
+                            <TextBlock Text="{loc:Loc updates.graphics}" Style="{StaticResource SectionLabel}" Margin="0,14,0,6" />
+                            <TextBlock Text="{Binding Graphics}" TextWrapping="Wrap" FontSize="12.5" />
                         </StackPanel>
                     </Border>
-                    <Border Grid.Column="1" Style="{StaticResource Card}" Margin="4,0,4,0">
+                    <Border Grid.Column="1" Style="{StaticResource Card}" Margin="0,0,10,0">
                         <StackPanel>
                             <TextBlock Text="{loc:Loc updates.memory}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
                             <TextBlock Text="{Binding MemoryUsedPercent, StringFormat={}{0:0}%}"
-                                       FontSize="28" FontWeight="SemiBold" />
+                                       FontSize="26" FontWeight="SemiBold" Foreground="{StaticResource AccentBrush}" />
                             <TextBlock Text="{Binding MemoryDetail}" Style="{StaticResource MetaLabel}" Margin="0,4,0,0" />
-                            <ProgressBar Value="{Binding MemoryUsedPercent}" Margin="0,12,0,0">
+                            <ProgressBar Value="{Binding MemoryUsedPercent}" Margin="0,14,0,0">
                                 <ProgressBar.Style>
                                     <Style TargetType="ProgressBar" BasedOn="{StaticResource MeterBar}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MemoryHigh}" Value="True">
-                                                <Setter Property="Foreground" Value="#C4A574" />
+                                                <Setter Property="Foreground" Value="{StaticResource WarnBrush}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -48,17 +48,17 @@
                             </ProgressBar>
                         </StackPanel>
                     </Border>
-                    <Border Grid.Column="2" Style="{StaticResource Card}" Margin="8,0,0,0">
+                    <Border Grid.Column="2" Style="{StaticResource Card}">
                         <StackPanel>
                             <TextBlock Text="{loc:Loc updates.machine}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
-                            <TextBlock Text="{Binding ComputerName}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding ComputerName}" FontSize="18" FontWeight="SemiBold" />
                             <TextBlock Text="{Binding MachineLine}" Style="{StaticResource MetaLabel}" Margin="0,6,0,0"
                                        TextWrapping="Wrap" />
                             <TextBlock Text="{Binding Architecture}" Style="{StaticResource MetaLabel}" Margin="0,4,0,0" />
                         </StackPanel>
                     </Border>
                 </Grid>
-                <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                <Border Style="{StaticResource Card}" Margin="0,0,0,10">
                     <StackPanel>
                         <TextBlock Text="{loc:Loc updates.disks}" Style="{StaticResource SectionLabel}" Margin="0,0,0,10" />
                         <TextBlock Text="{loc:Loc updates.disks.none}" Style="{StaticResource MetaLabel}"
@@ -75,15 +75,17 @@
                                     <StackPanel Margin="0,0,16,12">
                                         <DockPanel>
                                             <TextBlock DockPanel.Dock="Right" Style="{StaticResource MetaLabel}"
+                                                       FontFamily="{StaticResource MonoFont}"
                                                        Text="{Binding UsedPercent, StringFormat={}{0:0}%}" />
-                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="13"
+                                                       TextTrimming="CharacterEllipsis" />
                                         </DockPanel>
-                                        <ProgressBar Value="{Binding UsedPercent}" Margin="0,6,0,4">
+                                        <ProgressBar Value="{Binding UsedPercent}" Margin="0,8,0,6">
                                             <ProgressBar.Style>
                                                 <Style TargetType="ProgressBar" BasedOn="{StaticResource MeterBar}">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsHigh}" Value="True">
-                                                            <Setter Property="Foreground" Value="#C4A574" />
+                                                            <Setter Property="Foreground" Value="{StaticResource WarnBrush}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -96,22 +98,22 @@
                         </ItemsControl>
                     </StackPanel>
                 </Border>
-                <Grid Margin="0,0,0,12">
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.3*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Border Style="{StaticResource Card}" Margin="0,0,8,0">
+                    <Border Style="{StaticResource Card}" Margin="0,0,10,0">
                         <StackPanel>
                             <TextBlock Text="{loc:Loc updates.status}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
-                            <TextBlock Text="{Binding ProductName}" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding ProductName}" FontWeight="SemiBold" FontSize="13" />
                             <TextBlock Style="{StaticResource MetaLabel}" Margin="0,4,0,0"
                                        Text="{Binding DisplayVersion}" />
-                            <DockPanel Margin="0,8,0,0">
+                            <DockPanel Margin="0,10,0,0">
                                 <TextBlock DockPanel.Dock="Left" Width="128" Style="{StaticResource MetaLabel}"
                                            Text="{loc:Loc updates.build}" />
-                                <TextBlock Text="{Binding Build}" />
+                                <TextBlock Text="{Binding Build}" FontFamily="{StaticResource MonoFont}" FontSize="12" />
                             </DockPanel>
                             <DockPanel Margin="0,4,0,0">
                                 <TextBlock DockPanel.Dock="Left" Width="128" Style="{StaticResource MetaLabel}"
@@ -135,29 +137,30 @@
                             </DockPanel>
                         </StackPanel>
                     </Border>
-                    <Border Grid.Column="1" Style="{StaticResource Card}" Margin="4,0,4,0">
+                    <Border Grid.Column="1" Style="{StaticResource Card}" Margin="0,0,10,0">
                         <StackPanel>
                             <TextBlock Text="{loc:Loc updates.catalogs}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
-                            <TextBlock Text="{Binding AppsVersion, StringFormat=Applications  {0}}" />
-                            <TextBlock Text="{Binding TweaksVersion, StringFormat=Tweaks  {0}}" />
-                            <TextBlock Text="{Binding FeaturesVersion, StringFormat=Features  {0}}" />
+                            <TextBlock Text="{Binding AppsVersion, StringFormat=Applications  {0}}" FontSize="12.5" />
+                            <TextBlock Text="{Binding TweaksVersion, StringFormat=Tweaks  {0}}" FontSize="12.5" />
+                            <TextBlock Text="{Binding FeaturesVersion, StringFormat=Features  {0}}" FontSize="12.5" />
                         </StackPanel>
                     </Border>
-                    <Border Grid.Column="2" Style="{StaticResource Card}" Margin="8,0,0,0">
+                    <Border Grid.Column="2" Style="{StaticResource Card}">
                         <StackPanel>
                             <TextBlock Text="{loc:Loc updates.app}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
-                            <TextBlock Text="{Binding AppVersion, StringFormat=v{0}}" FontSize="20" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding AppVersion, StringFormat=v{0}}" FontSize="18" FontWeight="SemiBold"
+                                       Foreground="{StaticResource AccentBrush}" />
                         </StackPanel>
                     </Border>
                 </Grid>
                 <TextBlock Text="{loc:Loc updates.policy}" Style="{StaticResource SectionLabel}" Margin="0,4,0,8" />
-                <UniformGrid Columns="3" Margin="0,0,0,12">
-                    <ui:Button Appearance="Primary" Margin="0,0,8,0" Height="40"
+                <UniformGrid Columns="3" Margin="0,0,0,10">
+                    <ui:Button Appearance="Primary" Margin="0,0,10,0" Height="38"
                                Content="{loc:Loc updates.default}" Command="{Binding ApplyDefaultCommand}" />
-                    <ui:Button Margin="4,0,4,0" Height="40"
+                    <ui:Button Margin="0,0,10,0" Height="38"
                                Content="{loc:Loc updates.security}" Command="{Binding ApplySecurityCommand}" />
-                    <ui:Button Height="40" Appearance="Danger"
-                               Content="{loc:Loc updates.disable}" Command="{Binding ApplyDisableCommand}" />
+                    <Button Style="{StaticResource DangerButton}" Height="38"
+                            Content="{loc:Loc updates.disable}" Command="{Binding ApplyDisableCommand}" />
                 </UniformGrid>
                 <Border Style="{StaticResource Card}">
                     <StackPanel>

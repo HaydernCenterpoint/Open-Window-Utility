@@ -29,15 +29,14 @@ dotnet build OpenWindowUtility.slnx -c Release
 dotnet run --project src/OpenWindowUtility.App/OpenWindowUtility.App.csproj
 ```
 
-## v1 gồm
+## v2 gồm
 
 - **Ứng dụng** — catalog ~80 gói qua WinGet / Chocolatey
 - **Tinh chỉnh** — thiết yếu / nâng cao / công tắc, có journal hoàn tác và điểm khôi phục
 - **Cấu hình hệ thống** — DISM, sửa lỗi, Control Panel cổ điển
 - **Dọn dẹp** — quét rác đã biết, phân loại SAFE/DEEP, chỉ xóa mục bạn chọn
 - **Windows Update** — Mặc định / Bảo mật / Tắt hết (phải gõ DISABLE)
-
-Win11 Creator (ISO tùy chỉnh) để v2.
+- **Win11 Creator** — Bỏ qua kiểm tra TPM 2.0 / CPU / RAM / Secure Boot, bỏ qua bắt buộc tài khoản Microsoft, tự động xuất file `autounattend.xml` hoặc đóng gói ISO Windows 11 tùy chỉnh
 
 ## An toàn
 

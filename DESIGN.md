@@ -2,8 +2,8 @@
 
 ## Source of truth
 - Status: Active
-- Last refreshed: 2026-08-14
-- Primary product surfaces: WPF shell (sidebar + page + log), Applications, Tweaks, Config, Cleanup, Updates, Settings
+- Last refreshed: 2026-08-17
+- Primary product surfaces: WPF shell (sidebar + page + log), Applications, Tweaks, Config, Cleanup, Updates, Win11 Creator, Settings
 - Evidence reviewed: `src/OpenWindowUtility.App/App.xaml`, `MainWindow.xaml`, page views, WPF-UI Dark theme
 
 ## Brand
@@ -12,8 +12,8 @@
 - Avoid: AI purple, neon, glassmorphism, Inter, icon-only mystery nav, exclamation-mark copy.
 
 ## Product goals
-- Goals: Fast setup and maintenance of a Windows PC from one elevated app.
-- Non-goals: Win11 ISO creator (v2), light theme in v1, extra package managers.
+- Goals: Fast setup, customization, and maintenance of a Windows PC from one elevated app.
+- Non-goals: Light theme in v2, extra third-party package managers beyond WinGet/Choco.
 - Success signals: User finds the current section without hovering; primary action is obvious; log stays out of the way.
 
 ## Personas and jobs
@@ -22,8 +22,8 @@
 - Key contexts of use: Full-screen desktop, always elevated, often on a fresh install.
 
 ## Information architecture
-- Primary navigation: Labeled left rail — Applications, Tweaks, Config, Cleanup, Updates; Settings at the bottom.
-- Core routes/screens: Same six pages as today. Win11 Creator stays hidden until v2.
+- Primary navigation: Labeled left rail — Applications, Tweaks, Config, Cleanup, Updates, Win11 Creator; Settings at the bottom.
+- Core routes/screens: Seven pages (Applications, Tweaks, Config, Cleanup, Updates, Win11 Creator, Settings).
 - Content hierarchy: Page title → filters/actions → content → one-line footer. Job log collapsed by default.
 
 ## Design principles
@@ -79,4 +79,4 @@
 
 ## Open questions
 - [ ] Light theme — deferred
-- [ ] Custom ISO (Win11 Creator) — v2
+- [x] Custom ISO & Unattended setup (Win11 Creator) — Completed in v2.0

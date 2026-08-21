@@ -10,8 +10,13 @@ public enum JunkKind
     WindowsUpdateCache,
     ErrorReports,
     CrashDumps,
+    FontCache,
+    ExplorerCache,
     DirectXShaderCache,
     BrowserCache,
+    AiAppCache,
+    AiModelCache,
+    DevPackageCache,
     Prefetch,
     WindowsOld
 }
@@ -20,6 +25,7 @@ public sealed class JunkCategoryInfo
 {
     public required JunkKind Kind { get; init; }
     public required string Id { get; init; }
+    public required string Group { get; init; }
     public required bool Deep { get; init; }
 }
 

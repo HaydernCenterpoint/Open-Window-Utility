@@ -17,6 +17,7 @@ public enum AppSection
     Config,
     Cleanup,
     Updates,
+    Win11,
     Settings
 }
 
@@ -33,11 +34,13 @@ public partial class ShellViewModel : ObservableObject
     public ConfigViewModel Config { get; } = new();
     public CleanupViewModel Cleanup { get; } = new();
     public UpdatesViewModel Updates { get; } = new();
+    public Win11CreatorViewModel Win11Creator { get; } = new();
     public SettingsViewModel Settings { get; } = new();
 
     public ObservableCollection<string> LogLines { get; } = [];
     public LocalizationService Loc => App.Host.Loc;
     public bool IsBusy => App.Host.Jobs.IsBusy;
+    public bool HasLogLines => LogLines.Count > 0;
 
     [ObservableProperty]
     private bool _isLogExpanded;
@@ -79,6 +82,7 @@ public partial class ShellViewModel : ObservableObject
             {
                 LogLines.Add(evt.ToString());
                 IsLogExpanded = true;
+                OnPropertyChanged(nameof(HasLogLines));
                 while (LogLines.Count > 500)
                 {
                     LogLines.RemoveAt(0);
@@ -102,6 +106,7 @@ public partial class ShellViewModel : ObservableObject
             AppSection.Config => Config,
             AppSection.Cleanup => Cleanup,
             AppSection.Updates => Updates,
+            AppSection.Win11 => Win11Creator,
             AppSection.Settings => Settings,
             _ => Unreachable(value)
         };

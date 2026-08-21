@@ -35,15 +35,14 @@ Publish a portable EXE:
 dotnet publish src/OpenWindowUtility.App/OpenWindowUtility.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o artifacts
 ```
 
-## What v1 includes
+## What v2 includes
 
 - **Applications** — curated catalog (~80 packages) via WinGet / Chocolatey
 - **Tweaks** — essential, advanced, and preference toggles with undo journal + restore point
 - **System Configuration** — DISM features, repair actions, classic Control Panel shortcuts
 - **Cleanup** — scan known junk, classify SAFE/DEEP, delete only what you select
 - **Windows Update** — Default / Security / Disable All (typed confirmation)
-
-Win11 Creator (custom ISO) is reserved for v2.
+- **Win11 Creator** — bypass TPM 2.0 / CPU / RAM / Secure Boot, skip Microsoft Account enforcement, auto-generate `autounattend.xml` or build custom bootable Windows 11 ISOs
 
 ## Safety
 

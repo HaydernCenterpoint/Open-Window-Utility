@@ -21,7 +21,8 @@ public static class ProcessAllowlist
         "ipconfig.exe", "ipconfig",
         "wsreset.exe", "wsreset",
         "w32tm.exe", "w32tm",
-        "gpupdate.exe", "gpupdate"
+        "gpupdate.exe", "gpupdate",
+        "oscdimg.exe", "oscdimg"
     };
 
     private static readonly HashSet<string> ShellDocuments = new(StringComparer.OrdinalIgnoreCase)

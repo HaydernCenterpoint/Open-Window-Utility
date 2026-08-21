@@ -2,6 +2,7 @@ using OpenWindowUtility.Core;
 using OpenWindowUtility.Core.AppUpdate;
 using OpenWindowUtility.Core.Catalog;
 using OpenWindowUtility.Core.Cleanup;
+using OpenWindowUtility.Core.Creator;
 using OpenWindowUtility.Core.Features;
 using OpenWindowUtility.Core.Jobs;
 using OpenWindowUtility.Core.Operations;
@@ -31,6 +32,7 @@ public sealed class AppHost
     public required UndoJournal Journal { get; init; }
     public required CleanupEngine Cleanup { get; init; }
     public required AppUpdateClient AppUpdate { get; init; }
+    public required IsoEngine IsoEngine { get; init; }
 
     public static AppHost Create()
     {
@@ -61,7 +63,8 @@ public sealed class AppHost
             Profiles = new ProfileService(),
             Journal = journal,
             Cleanup = new CleanupEngine(),
-            AppUpdate = new AppUpdateClient()
+            AppUpdate = new AppUpdateClient(),
+            IsoEngine = new IsoEngine(runner)
         };
     }
 }

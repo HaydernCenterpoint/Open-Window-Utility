@@ -4,10 +4,11 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:loc="clr-namespace:OpenWindowUtility.App.Markup">
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,14">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <ui:Button Content="{loc:Loc cleanup.selectSafe}" Command="{Binding SelectSafeCommand}" Margin="0,0,6,0" />
-                <ui:Button Content="{loc:Loc cleanup.selectNone}" Command="{Binding SelectNoneCommand}" Margin="0,0,6,0" />
+                <Button Style="{StaticResource GhostButton}" Content="{loc:Loc cleanup.selectNone}"
+                        Command="{Binding SelectNoneCommand}" Margin="0,0,6,0" />
                 <ui:Button Content="{loc:Loc cleanup.scan}" Command="{Binding ScanCommand}" Margin="0,0,6,0" />
                 <ui:Button Appearance="Primary" Content="{loc:Loc cleanup.clean}" Command="{Binding CleanCommand}" />
             </StackPanel>
@@ -18,56 +19,87 @@
         </DockPanel>
         <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource FooterText}" Text="{Binding FooterText}" />
         <DockPanel>
-            <TextBlock DockPanel.Dock="Top" Margin="0,0,0,12" Style="{StaticResource MetaLabel}" Text="{Binding StatusText}" />
+            <TextBlock DockPanel.Dock="Top" Margin="0,0,0,10" Style="{StaticResource MetaLabel}" Text="{Binding StatusText}" />
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding Categories}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Style="{StaticResource Card}" Margin="0,0,0,8" Padding="12"
-                                    ToolTip="{Binding SamplesText}">
-                                <DockPanel>
-                                    <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsSelected}"
-                                              VerticalAlignment="Top" Margin="0,2,10,0" />
-                                    <StackPanel DockPanel.Dock="Right" MinWidth="112" HorizontalAlignment="Right">
-                                        <Border CornerRadius="4" Padding="6,1" HorizontalAlignment="Right" Margin="0,0,0,6">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="Background" Value="#24352C" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Deep}" Value="True">
-                                                            <Setter Property="Background" Value="#3A2A22" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <TextBlock Text="{Binding Badge}" FontSize="10" HorizontalAlignment="Right">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Foreground" Value="#8FBF9A" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Deep}" Value="True">
-                                                                <Setter Property="Foreground" Value="#C4A574" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Border>
-                                        <TextBlock Text="{Binding SizeText}" FontWeight="SemiBold"
-                                                   HorizontalAlignment="Right" FontFamily="Cascadia Mono, Consolas" />
-                                        <TextBlock Style="{StaticResource MetaLabel}" HorizontalAlignment="Right"
-                                                   Text="{Binding CountLabel}" />
-                                    </StackPanel>
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" FontWeight="SemiBold" />
-                                        <TextBlock Text="{Binding Description}" Style="{StaticResource MetaLabel}"
-                                                   TextWrapping="Wrap" Margin="0,4,12,0" />
-                                    </StackPanel>
-                                </DockPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <Border Style="{StaticResource Card}" Padding="10">
+                    <ItemsControl ItemsSource="{Binding Groups}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,12">
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource SectionLabel}"
+                                               Margin="4,4,0,6" />
+                                    <ItemsControl ItemsSource="{Binding Items}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border CornerRadius="6" Padding="10,8" ToolTip="{Binding SamplesText}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="{StaticResource SurfaceHoverBrush}" />
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}"
+                                                                  VerticalAlignment="Top" Margin="0,2,12,0" />
+                                                        <StackPanel Grid.Column="1" Margin="0,0,16,0" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap"
+                                                                       FontWeight="SemiBold" FontSize="13" />
+                                                            <TextBlock Text="{Binding Description}"
+                                                                       Style="{StaticResource MetaLabel}"
+                                                                       TextWrapping="Wrap" Margin="0,3,0,0" />
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="2" MinWidth="120" HorizontalAlignment="Right">
+                                                            <Border HorizontalAlignment="Right" Margin="0,0,0,6">
+                                                                <TextBlock Text="{Binding Badge}" FontSize="10"
+                                                                           HorizontalAlignment="Right">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Foreground" Value="{StaticResource OkBrush}" />
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding Deep}" Value="True">
+                                                                                    <Setter Property="Foreground" Value="{StaticResource WarnBrush}" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                                <Border.Style>
+                                                                    <Style TargetType="Border" BasedOn="{StaticResource Chip}">
+                                                                        <Setter Property="Background" Value="{StaticResource OkTintBrush}" />
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding Deep}" Value="True">
+                                                                                <Setter Property="Background" Value="{StaticResource WarnTintBrush}" />
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Border.Style>
+                                                            </Border>
+                                                            <TextBlock Text="{Binding SizeText}" FontWeight="SemiBold"
+                                                                       FontSize="13" HorizontalAlignment="Right"
+                                                                       FontFamily="{StaticResource MonoFont}"
+                                                                       Foreground="{StaticResource TextBrush}" />
+                                                            <TextBlock Style="{StaticResource MetaLabel}"
+                                                                       HorizontalAlignment="Right"
+                                                                       Text="{Binding CountLabel}" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
             </ScrollViewer>
         </DockPanel>
     </DockPanel>

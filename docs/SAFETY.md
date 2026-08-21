@@ -23,7 +23,7 @@ Open Window Utility changes the operating system. Most tweaks are reversible thr
 | LLMNR - Disable | Can break name lookup on some local networks. |
 | IPv6 disable | Can break some VPN / modern networks. Prefer "IPv4 preferred" first. |
 | Hibernation disable | Deletes/stops hiberfil.sys; laptops lose hibernate. |
-| Deep Cleanup | Deletes selected junk (temp, caches, Recycle Bin). Scan first; Deep items (browser cache, Prefetch, Windows.old) stay unchecked. Windows.old needs a second confirm and removes upgrade rollback. |
+| Deep Cleanup | Deletes selected junk (temp, caches, Recycle Bin). Scan first; Deep items (browser, AI app/model caches, package caches, Prefetch, Windows.old) stay unchecked. Windows.old and AI download caches each need a second confirm. Does not delete Ollama models, Cursor projects, System32, or Program Files. |
 | App self-update | Replaces the running EXE after SHA-256 check. Confirm first; the app restarts. Only HTTPS feeds and allowlisted hosts. |
 | Hyper-V / Sandbox / WSL / Containers / Application Guard | Needs a compatible Windows edition; may require reboot. |
 | Network reset | Resets TCP/IP and Winsock. A reboot is often required. |

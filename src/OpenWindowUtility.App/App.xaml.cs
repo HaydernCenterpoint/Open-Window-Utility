@@ -33,7 +33,7 @@ public partial class App : Application
             return;
         }
 
-        ApplicationAccentColorManager.Apply(Color.FromRgb(0x4A, 0x7D, 0x76));
+        ApplicationAccentColorManager.Apply(Color.FromRgb(0x2E, 0x6A, 0x5E));
         base.OnStartup(e);
     }
 }

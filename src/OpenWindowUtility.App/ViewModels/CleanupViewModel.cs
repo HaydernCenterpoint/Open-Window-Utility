@@ -66,9 +66,19 @@ public partial class JunkCategoryViewModel : ObservableObject
     }
 }
 
+public sealed class JunkGroupViewModel : ObservableObject
+{
+    public required string Id { get; init; }
+    public required ObservableCollection<JunkCategoryViewModel> Items { get; init; }
+    public string Name => App.Host.Loc[$"cleanup.group.{Id}"];
+
+    public void RefreshText() => OnPropertyChanged(nameof(Name));
+}
+
 public partial class CleanupViewModel : PageViewModelBase
 {
     public ObservableCollection<JunkCategoryViewModel> Categories { get; } = [];
+    public ObservableCollection<JunkGroupViewModel> Groups { get; } = [];
 
     [ObservableProperty]
     private string _statusText = "";
@@ -108,6 +118,16 @@ public partial class CleanupViewModel : PageViewModelBase
             Categories.Add(vm);
         }
 
+        foreach (var groupId in JunkCatalog.GroupOrder)
+        {
+            var items = new ObservableCollection<JunkCategoryViewModel>(
+                Categories.Where(x => x.Info.Group == groupId));
+            if (items.Count > 0)
+            {
+                Groups.Add(new JunkGroupViewModel { Id = groupId, Items = items });
+            }
+        }
+
         StatusText = App.Host.Loc["cleanup.status.idle"];
     }
 
@@ -118,6 +138,11 @@ public partial class CleanupViewModel : PageViewModelBase
         foreach (var item in Categories)
         {
             item.RefreshText();
+        }
+
+        foreach (var group in Groups)
+        {
+            group.RefreshText();
         }
 
         if (!HasScan)
@@ -209,6 +234,16 @@ public partial class CleanupViewModel : PageViewModelBase
         if (selected.Any(x => x.Kind == JunkKind.WindowsOld)
             && MessageBox.Show(
                 App.Host.Loc["cleanup.confirmOld"],
+                App.Host.Loc["nav.cleanup"],
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        if (selected.Any(x => x.Kind == JunkKind.AiModelCache)
+            && MessageBox.Show(
+                App.Host.Loc["cleanup.confirmAiModels"],
                 App.Host.Loc["nav.cleanup"],
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning) != MessageBoxResult.Yes)

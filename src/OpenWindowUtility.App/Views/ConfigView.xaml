@@ -4,7 +4,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:loc="clr-namespace:OpenWindowUtility.App.Markup">
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,14">
             <ui:Button Appearance="Primary" DockPanel.Dock="Right" Content="{loc:Loc config.apply}"
                        Command="{Binding ApplyCommand}" />
             <StackPanel>
@@ -19,58 +19,82 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Border Style="{StaticResource Card}" Margin="0,0,8,0" Padding="14,14,8,14">
+            <Border Style="{StaticResource Card}" Margin="0,0,8,0" Padding="16,16,8,16">
                 <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Margin="0,0,6,10">
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,4">
                         <TextBlock Text="{loc:Loc config.features}" Style="{StaticResource SectionLabel}" />
                         <TextBlock Text="{loc:Loc config.features.hint}" Style="{StaticResource MetaLabel}"
-                                   TextWrapping="Wrap" Margin="0,4,0,0" />
+                                   TextWrapping="Wrap" Margin="0,6,8,0" />
+                        <Border Height="1" Background="{StaticResource HairlineBrush}" Margin="0,10,8,6" />
                     </StackPanel>
                     <ScrollViewer>
                         <ItemsControl ItemsSource="{Binding Features}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding IsSelected}" Margin="0,0,6,10"
-                                              VerticalContentAlignment="Top"
-                                              IsEnabled="{Binding IsEditionSupported}">
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
-                                            <TextBlock Text="{Binding Description}" Style="{StaticResource MetaLabel}"
-                                                       TextWrapping="Wrap" />
-                                            <TextBlock Text="{loc:Loc config.edition}" Style="{StaticResource MetaLabel}"
-                                                       Foreground="#C4A574"
-                                                       Visibility="{Binding IsEditionSupported, Converter={StaticResource BoolToVisInvert}}" />
-                                        </StackPanel>
-                                    </CheckBox>
+                                    <Border CornerRadius="6" Padding="8,6" Margin="0,0,8,2">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SurfaceHoverBrush}" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <CheckBox IsChecked="{Binding IsSelected}"
+                                                  VerticalContentAlignment="Top"
+                                                  IsEnabled="{Binding IsEditionSupported}">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" FontSize="13" />
+                                                <TextBlock Text="{Binding Description}" Style="{StaticResource MetaLabel}"
+                                                           TextWrapping="Wrap" />
+                                                <TextBlock Text="{loc:Loc config.edition}" Style="{StaticResource MetaLabel}"
+                                                           Foreground="{StaticResource WarnBrush}"
+                                                           Visibility="{Binding IsEditionSupported, Converter={StaticResource BoolToVisInvert}}" />
+                                            </StackPanel>
+                                        </CheckBox>
+                                    </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
                 </DockPanel>
             </Border>
-            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="4,0,4,0" Padding="14,14,8,14">
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="4,0,4,0" Padding="16,16,8,16">
                 <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Margin="0,0,6,10">
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,4">
                         <TextBlock Text="{loc:Loc config.fixes}" Style="{StaticResource SectionLabel}" />
                         <TextBlock Text="{loc:Loc config.fixes.hint}" Style="{StaticResource MetaLabel}"
-                                   TextWrapping="Wrap" Margin="0,4,0,0" />
+                                   TextWrapping="Wrap" Margin="0,6,8,0" />
+                        <Border Height="1" Background="{StaticResource HairlineBrush}" Margin="0,10,8,6" />
                     </StackPanel>
                     <ScrollViewer>
                         <ItemsControl ItemsSource="{Binding Fixes}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <DockPanel Margin="0,0,6,14" LastChildFill="True">
-                                        <ui:Button DockPanel.Dock="Right" VerticalAlignment="Top" Margin="10,0,0,0"
-                                                   Content="{loc:Loc config.run}"
-                                                   Command="{Binding DataContext.RunFixCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                   CommandParameter="{Binding}"
-                                                   IsEnabled="{Binding IsEditionSupported}" />
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
-                                            <TextBlock Text="{Binding Description}" Style="{StaticResource MetaLabel}"
-                                                       TextWrapping="Wrap" />
-                                        </StackPanel>
-                                    </DockPanel>
+                                    <Border CornerRadius="6" Padding="8,6" Margin="0,0,8,2">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SurfaceHoverBrush}" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <DockPanel LastChildFill="True">
+                                            <ui:Button DockPanel.Dock="Right" VerticalAlignment="Top" Margin="10,0,0,0"
+                                                       Content="{loc:Loc config.run}"
+                                                       Command="{Binding DataContext.RunFixCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                       CommandParameter="{Binding}"
+                                                       IsEnabled="{Binding IsEditionSupported}" />
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" FontSize="13" />
+                                                <TextBlock Text="{Binding Description}" Style="{StaticResource MetaLabel}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -79,10 +103,11 @@
             </Border>
             <Border Grid.Column="2" Style="{StaticResource Card}" Margin="8,0,0,0">
                 <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,4">
                         <TextBlock Text="{loc:Loc config.panels}" Style="{StaticResource SectionLabel}" />
                         <TextBlock Text="{loc:Loc config.panels.hint}" Style="{StaticResource MetaLabel}"
-                                   TextWrapping="Wrap" Margin="0,4,0,0" />
+                                   TextWrapping="Wrap" Margin="0,6,0,0" />
+                        <Border Height="1" Background="{StaticResource HairlineBrush}" Margin="0,10,0,6" />
                     </StackPanel>
                     <ScrollViewer>
                         <ItemsControl ItemsSource="{Binding Panels}">

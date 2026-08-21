@@ -67,11 +67,12 @@ public sealed class CleanupTests
     {
         Assert.Equal(JunkCatalog.Categories.Count, JunkCatalog.Categories.Select(x => x.Id).Distinct().Count());
         Assert.Equal(JunkCatalog.Categories.Count, JunkCatalog.Categories.Select(x => x.Kind).Distinct().Count());
+        Assert.Equal(Enum.GetValues<JunkKind>().Length, JunkCatalog.Categories.Count);
         using var fx = CleanupFixture.Create();
-        foreach (var category in JunkCatalog.Categories)
+        foreach (var kind in Enum.GetValues<JunkKind>())
         {
-            var roots = JunkCatalog.RootsFor(category.Kind, fx.Env);
-            if (category.Kind == JunkKind.RecycleBin)
+            var roots = JunkCatalog.RootsFor(kind, fx.Env);
+            if (kind == JunkKind.RecycleBin)
             {
                 Assert.Empty(roots);
             }
@@ -80,6 +81,49 @@ public sealed class CleanupTests
                 Assert.NotEmpty(roots);
             }
         }
+    }
+
+    [Fact]
+    public void PathGuard_AllowsAiCaches_KeepsModelsAndProjects()
+    {
+        using var fx = CleanupFixture.Create();
+        var cursorCache = Path.Combine(fx.CursorCache, "f_0001");
+        var cursorProject = Path.Combine(fx.CursorProject, "chat.json");
+        var hf = Path.Combine(fx.HuggingFace, "model.bin");
+        var ollama = Path.Combine(fx.OllamaModels, "blob");
+        File.WriteAllText(cursorCache, "c");
+        File.WriteAllText(cursorProject, "keep");
+        File.WriteAllText(hf, "m");
+        File.WriteAllText(ollama, "keep");
+
+        Assert.True(JunkPathGuard.CanDelete(cursorCache, JunkKind.AiAppCache, fx.Env));
+        Assert.False(JunkPathGuard.CanDelete(cursorProject, JunkKind.AiAppCache, fx.Env));
+        Assert.True(JunkPathGuard.CanDelete(hf, JunkKind.AiModelCache, fx.Env));
+        Assert.False(JunkPathGuard.CanDelete(ollama, JunkKind.AiModelCache, fx.Env));
+        Assert.False(JunkPathGuard.CanDelete(ollama, JunkKind.AiAppCache, fx.Env));
+    }
+
+    [Fact]
+    public async Task ScanAndClean_FindsAiCache_LeavesKeptFiles()
+    {
+        using var fx = CleanupFixture.Create();
+        File.WriteAllBytes(Path.Combine(fx.CursorCache, "gpu.bin"), new byte[1024]);
+        File.WriteAllBytes(Path.Combine(fx.HuggingFace, "shard"), new byte[2048]);
+        File.WriteAllText(Path.Combine(fx.CursorProject, "keep.json"), "keep");
+        File.WriteAllText(Path.Combine(fx.OllamaModels, "blob"), "keep");
+
+        var engine = new CleanupEngine(fx.Env, fx.Recycle);
+        var hits = await engine.ScanAsync(new NullLog(), CancellationToken.None);
+        var apps = hits.Single(x => x.Kind == JunkKind.AiAppCache);
+        var models = hits.Single(x => x.Kind == JunkKind.AiModelCache);
+        Assert.True(apps.FileCount >= 1);
+        Assert.True(models.FileCount >= 1);
+
+        await engine.CleanAsync([JunkKind.AiAppCache, JunkKind.AiModelCache], new NullLog(), CancellationToken.None);
+        Assert.False(File.Exists(Path.Combine(fx.CursorCache, "gpu.bin")));
+        Assert.False(File.Exists(Path.Combine(fx.HuggingFace, "shard")));
+        Assert.True(File.Exists(Path.Combine(fx.CursorProject, "keep.json")));
+        Assert.True(File.Exists(Path.Combine(fx.OllamaModels, "blob")));
     }
 
     private sealed class NullLog : IJobLog
@@ -120,6 +164,10 @@ public sealed class CleanupTests
         public required string UserTemp { get; init; }
         public required string WindowsTemp { get; init; }
         public required string ChromeCache { get; init; }
+        public required string CursorCache { get; init; }
+        public required string CursorProject { get; init; }
+        public required string HuggingFace { get; init; }
+        public required string OllamaModels { get; init; }
         public required string ProtectedFile { get; init; }
         public required FakeRecycle Recycle { get; init; }
 
@@ -132,10 +180,18 @@ public sealed class CleanupTests
             var userTemp = Path.Combine(profile, "AppData", "Local", "Temp");
             var windowsTemp = Path.Combine(windows, "Temp");
             var chromeCache = Path.Combine(profile, "AppData", "Local", "Google", "Chrome", "User Data", "Default", "Cache");
+            var cursorCache = Path.Combine(profile, "AppData", "Roaming", "Cursor", "GPUCache");
+            var cursorProject = Path.Combine(profile, ".cursor", "projects", "demo");
+            var huggingFace = Path.Combine(profile, ".cache", "huggingface", "hub");
+            var ollamaModels = Path.Combine(profile, ".ollama", "models");
             var system32 = Path.Combine(windows, "System32");
             Directory.CreateDirectory(userTemp);
             Directory.CreateDirectory(windowsTemp);
             Directory.CreateDirectory(chromeCache);
+            Directory.CreateDirectory(cursorCache);
+            Directory.CreateDirectory(cursorProject);
+            Directory.CreateDirectory(huggingFace);
+            Directory.CreateDirectory(ollamaModels);
             Directory.CreateDirectory(system32);
             Directory.CreateDirectory(programData);
             var protectedFile = Path.Combine(system32, "keep.dll");
@@ -153,6 +209,10 @@ public sealed class CleanupTests
                 UserTemp = userTemp,
                 WindowsTemp = windowsTemp,
                 ChromeCache = chromeCache,
+                CursorCache = cursorCache,
+                CursorProject = cursorProject,
+                HuggingFace = huggingFace,
+                OllamaModels = ollamaModels,
                 ProtectedFile = protectedFile,
                 Recycle = new FakeRecycle()
             };

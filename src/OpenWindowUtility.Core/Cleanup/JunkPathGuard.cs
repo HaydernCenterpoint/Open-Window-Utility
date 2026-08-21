@@ -51,7 +51,7 @@ public static class JunkPathGuard
             return false;
         }
 
-        if (LooksProtected(full, env))
+        if (LooksProtected(full, env) || LooksKeptUserData(full, env))
         {
             return false;
         }
@@ -97,6 +97,29 @@ public static class JunkPathGuard
             if (IsUnderRoot(full, protectedRoot))
             {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool LooksKeptUserData(string full, CleanupEnvironment env)
+    {
+        string[] kept =
+        [
+            @".ollama\models",
+            @".cursor\projects",
+            @".vscode\extensions",
+            @".lmstudio\models"
+        ];
+        foreach (var profile in env.UserProfiles)
+        {
+            foreach (var relative in kept)
+            {
+                if (IsUnderRoot(full, Path.Combine(profile, relative)))
+                {
+                    return true;
+                }
             }
         }
 
